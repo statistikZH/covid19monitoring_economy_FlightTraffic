@@ -56,12 +56,14 @@ htmltools::img(src = knitr::image_uri(file.path("../KtZuerichLogo.png")),
 ```
 
 
-Die Zahl der täglichen Flugbewegungen (Summe der Starts und Landungen) am Flughafen Zürich ist eingebrochen. Eine Zäsur war dabei der 13. März. An diesem Tag verkündete der Bundesrat verschärfte Massnahmen, um die Ausbreitung des Coronavirus in der Schweiz zu verlangsamen.  
-
+Die Zahl der täglichen Flugbewegungen (Summe der Starts und Landungen) am Flughafen Zürich ist eingebrochen. Eine Zäsur war dabei der 13. März (roter Kreis in der Grafik). An diesem Tag verkündete der Bundesrat verschärfte Massnahmen, um die Ausbreitung des Coronavirus in der Schweiz zu verlangsamen.  
+  
+  
 
 ```{r Plot, echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 library(ggplot2)
 library(scales)
+library(ggrepel)
 
 
 flights <- read.csv('Economy_FlightTrafficZRH.csv', encoding = 'UTF-8')
@@ -72,7 +74,8 @@ ggplot(flights,aes(as.Date(date),value)) +
       caption = 'Daten: Flughafen Zürich',
       x = 'Datum',
       y = 'Anzahl') +
-  geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),fill=NA, col='red', shape=1, size=5,lwd=2)+
+  geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),fill=NA, col='red', shape=1, size=5, stroke = 2)+
+ # geom_label_repel(data=flights[flights$date=='2020-03-13',],aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),label='13. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
   scale_x_date(labels = date_format("%d.%m.%Y"))+
   theme_bw()
 ```
