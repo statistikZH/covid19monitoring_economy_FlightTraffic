@@ -5,24 +5,15 @@ date: "17 März 2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r vorbereitung}
+rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 options(stringsAsFactors = F)
-```
-
-```{r vorbereitung}
-# Vorbereitungen ----
-# *************************************
-
-rm(list=ls())
-
-# Aendern der Sprache in R
-Sys.setenv(LANG = "de")
-
 
 ### Packages 
 library(rvest)
 library(dplyr)
+library(ggplot2)
 ```
 
 
@@ -47,8 +38,6 @@ arrivals_new <- flights[[2]] %>%
   as_tibble()%>%
   rename(date=PisteZeit,value=`Total:`)%>%
   mutate(date = as.POSIXct(date, format = '%d.%m.%Y'))
-
-
 ```
 
 ```{r Fortführung der bestehenden Tabellen}
@@ -59,44 +48,66 @@ departures <- departures_new %>%
   filter(!date %in% departures_old$date) %>%
   bind_rows(departures_old) %>%
   arrange(date)%>%
-  mutate(topic = 'wirtschaft',
-         variable = 'tot_depart',
+  mutate(topic = 'economy',
+         variable_short = 'depzrh',
+         variable_long = 'departures_zurich_airport',
          unit = 'flights',
          description = 'number of departures from Zurich Airport',
          location = 'Kanton Zürich',
          origin = 'Flughafen Zürich',
          update = 'daily',
          public = 'ja') %>%
-  select(date,value,topic,variable,location, unit, origin, update, public, description)
-
+  select(date,value,topic,variable_short, variable_long,location, unit, origin, update, public, description)
 
 arrivals_old  <- read.csv('old/arrivals.csv')%>%
   mutate(date = as.POSIXct(date, format = '%Y-%m-%d'))
-
 
 arrivals <- arrivals_new %>%
   filter(!date %in% arrivals_old$date) %>%
   bind_rows(arrivals_old) %>%
   arrange(date) %>%
-  mutate(topic = 'wirtschaft',
-         variable = 'tot_arr',
+  mutate(topic = 'economy',
+         variable_short = 'arrzrh',
+         variable_long = 'arrivals_zurich_airport',
          unit = 'flights',
          description = 'number of arrivals at Zurich Airport',
          location = 'Kanton Zürich',
          origin = 'Flughafen Zürich',
          update = 'daily',
          public = 'ja') %>%
-  select(date,value,topic,variable,location, unit, origin, update, public, description)
+  select(date,value,topic,variable_short, variable_long,location, unit, origin, update, public, description)
 
 #Einen Datensatz generieren
-flights <- rbind(departures,arrivals)
+flights <- rbind(departures,arrivals)%>%
+  group_by(date) %>%
+  summarise(value = sum(value)) %>%
+  arrange(date) %>%
+  mutate(topic = 'economy',
+         variable_short = 'fmzrh',
+         variable_long = 'flights_movements_zurich_airport',
+         unit = 'flights',
+         description = 'Flight Movements Zurich Airport (= number of arrivals and departures)',
+         location = 'Kanton Zürich',
+         origin = 'Flughafen Zürich',
+         update = 'daily',
+         public = 'ja') %>%
+  select(date,value,topic,variable_short,variable_long,location,unit,origin,update,public,description)
 
-#Aktualisierte Daten müssen noch manuell auf Github gespielt werden
-write.csv(flights,'Economy_FlightTraffic.csv',row.names=F, fileEncoding = "UTF-8")
-write.csv(flights,'../Daten/basil/Economy_FlightTraffic.csv',row.names=F, fileEncoding = "UTF-8")
+#Datensatz aktualisieren
+write.csv(flights,'Economy_FlightTrafficZRH.csv',row.names=F, fileEncoding = "UTF-8")
 
-#Alte Dateien überschreiben
+#Abspeichern weiterer Date (werden auch für Aktualisierung gebraucht.)
 write.csv(arrivals,'old/arrivals.csv',row.names=F, fileEncoding = "UTF-8")
 write.csv(departures,'old/departures.csv', row.names=F, fileEncoding = "UTF-8")
 
+```
+
+```{r Plot,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
+ggplot(flights,aes(date,value)) +
+  geom_line() +
+  labs(title = 'Flight Movements Zurich Airport',
+      caption = 'Source: Zurich Airport') +
+  ylab('Number of flights')+
+  xlab('Date')+
+  theme_bw()
 ```
