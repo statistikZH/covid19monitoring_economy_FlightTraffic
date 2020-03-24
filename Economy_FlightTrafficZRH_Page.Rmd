@@ -65,8 +65,10 @@ Medienmitteilung Bundesrat vom 13. März: https://www.admin.ch/gov/de/start/doku
 
 
 # Plot
-```{r Plot, echo=T}
+```{r Plot, echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 library(ggplot2)
+library(scales)
+
 
 flights <- read.csv('Economy_FlightTrafficZRH.csv', encoding = 'UTF-8')
 
@@ -76,6 +78,9 @@ ggplot(flights,aes(as.Date(date),value)) +
       caption = 'Source: Zurich Airport') +
   ylab('Number of flights')+
   xlab('Date')+
+  scale_x_date(labels = date_format("%d.%m.%Y"))+
   theme_bw()
 ```
 
+# Repository
+https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic
