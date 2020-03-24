@@ -57,7 +57,7 @@ htmltools::img(src = knitr::image_uri(file.path("../KtZuerichLogo.png")),
 # Zu den Daten
 Die Grafik zeigt die Anzahl der Flugbewegungen (= Anzahl der Starts und Landungen) pro Tag am Flughafen Zürich.
 
-Drastisch nehmen die Flugbewegungen seit dem 13. März ab. An diesem Tag hat der Bundesrat verschärfte Massnahmen verkündet, um Verbreitung von des Coronavirus zu verlangsamen. 
+Drastisch nehmen die Flugbewegungen seit dem 13. März ab. An diesem Tag hat der Bundesrat verschärfte Massnahmen verkündet, um die Verbreitung des Coronavirus zu verlangsamen. 
 
 
 Datenquelle: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik
