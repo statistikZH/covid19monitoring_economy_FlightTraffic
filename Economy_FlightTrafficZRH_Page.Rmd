@@ -1,5 +1,6 @@
 ---
 title: "Flight Traffic ZRH"
+subtitle: 'Flugbewegungen Flughafen Zürich'
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
@@ -54,17 +55,10 @@ htmltools::img(src = knitr::image_uri(file.path("../KtZuerichLogo.png")),
               style = 'position:absolute; top:0; right:0; padding:0px;')
 ```
 
-# Zu den Daten
-Die Grafik zeigt die Anzahl der Flugbewegungen (= Anzahl der Starts und Landungen) pro Tag am Flughafen Zürich.
 
-Drastisch nehmen die Flugbewegungen seit dem 13. März ab. An diesem Tag hat der Bundesrat verschärfte Massnahmen verkündet, um die Verbreitung des Coronavirus zu verlangsamen. 
+Die Zahl der täglichen Flugbewegungen (Summe der Starts und Landungen) am Flughafen Zürich ist eingebrochen. Eine Zäsur war dabei der 13. März. An diesem Tag verkündete der Bundesrat verschärfte Massnahmen, um die Ausbreitung des Coronavirus in der Schweiz zu verlangsamen.  
 
 
-Datenquelle: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik
-Medienmitteilung Bundesrat vom 13. März: https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-78437.html
-
-
-# Plot
 ```{r Plot, echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 library(ggplot2)
 library(scales)
@@ -74,13 +68,19 @@ flights <- read.csv('Economy_FlightTrafficZRH.csv', encoding = 'UTF-8')
 
 ggplot(flights,aes(as.Date(date),value)) +
   geom_line() +
-  labs(title = 'Flight Movements Zurich Airport',
-      caption = 'Source: Zurich Airport') +
-  ylab('Number of flights')+
-  xlab('Date')+
+  labs(title = 'Flugbewegungen Flughafen Zurich',
+      caption = 'Daten: Flughafen Zürich',
+      x = 'Datum',
+      y = 'Anzahl') +
+  geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),fill=NA, col='red', shape=1, size=5,lwd=2)+
   scale_x_date(labels = date_format("%d.%m.%Y"))+
   theme_bw()
 ```
 
-# Repository
-https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic
+# Quellen
+Github: https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic
+
+Datenquelle: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik
+
+Medienmitteilung Bundesrat vom 13. März: https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-78437.html
+
