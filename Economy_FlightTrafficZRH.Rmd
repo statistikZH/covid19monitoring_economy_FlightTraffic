@@ -1,11 +1,65 @@
 ---
-title: "flugbewegungen"
-author: "Basil Schläpfer"
-date: "17 März 2020"
-output: html_document
+title: "Flight Traffic ZRH"
+subtitle: 'Flugbewegungen Flughafen Zürich'
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    theme: lumen
+    highlight: tango
 ---
 
-```{r vorbereitung}
+<style type="text/css">
+.main-container {
+  max-width: 1800px;
+  margin-left: 0;
+  margin-right: auto;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #eee;
+}
+
+h1.title {
+  font-size: 38px;
+  color: #000000;
+  }
+  
+h1 { /* Header 1 */
+  font-size: 28px;
+  color: #0033cc;
+}
+h2 { /* Header 2 */
+    font-size: 28px;
+	color: #0099ff
+}
+h3 { /* Header 3 */
+    font-size: 14px;
+	color: #6600cc
+}
+</style>
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri(file.path("../KtZuerichLogo.png")),
+             alt = 'logo', 
+              style = 'position:absolute; top:0; right:0; padding:0px;')
+```
+
+
+Die Zahl der täglichen Flugbewegungen (Summe der Starts und Landungen) am Flughafen Zürich ist eingebrochen. Eine Zäsur war dabei der 13. März (roter Kreis in der Grafik). An diesem Tag verkündete der Bundesrat verschärfte Massnahmen, um die Ausbreitung des Coronavirus in der Schweiz zu verlangsamen.  
+  
+
+```{r vorbereitung,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 options(stringsAsFactors = F)
@@ -17,7 +71,7 @@ library(ggplot2)
 ```
 
 
-```{r Aktuelle Daten laden}
+```{r Aktuelle Daten laden,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 url  <- 'https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik'
 
 flights <- url %>%
@@ -40,7 +94,7 @@ arrivals_new <- flights[[2]] %>%
   mutate(date = as.POSIXct(date, format = '%d.%m.%Y'))
 ```
 
-```{r Fortführung der bestehenden Tabellen}
+```{r Fortführung der bestehenden Tabellen,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 departures_old <- read.csv('old/departures.csv')%>%
   mutate(date = as.POSIXct(date, format = '%Y-%m-%d'))
 
@@ -102,12 +156,30 @@ write.csv(departures,'old/departures.csv', row.names=F, fileEncoding = "UTF-8")
 
 ```
 
-```{r Plot,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
-ggplot(flights,aes(date,value)) +
+```{r Plot, echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
+library(ggplot2)
+library(scales)
+library(ggrepel)
+
+
+flights <- read.csv('Economy_FlightTrafficZRH.csv', encoding = 'UTF-8')
+
+ggplot(flights,aes(as.Date(date),value)) +
   geom_line() +
-  labs(title = 'Flight Movements Zurich Airport',
-      caption = 'Source: Zurich Airport') +
-  ylab('Number of flights')+
-  xlab('Date')+
+  labs(title = 'Flugbewegungen Flughafen Zurich',
+      caption = 'Daten: Flughafen Zürich',
+      x = 'Datum',
+      y = 'Anzahl') +
+  geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),fill=NA, col='red', shape=1, size=5, stroke = 2)+
+ # geom_label_repel(data=flights[flights$date=='2020-03-13',],aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),label='13. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
+  scale_x_date(labels = date_format("%d.%m.%Y"))+
   theme_bw()
 ```
+
+
+# Quellen
+Github: https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic
+
+Datenquelle: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik
+
+Medienmitteilung Bundesrat vom 13. März: https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-78437.html
