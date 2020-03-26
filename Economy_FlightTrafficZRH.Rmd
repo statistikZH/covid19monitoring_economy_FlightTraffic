@@ -136,19 +136,22 @@ flights <- rbind(departures,arrivals)%>%
   group_by(date) %>%
   summarise(value = sum(value)) %>%
   arrange(date) %>%
-  mutate(topic = 'economy',
-         variable_short = 'fmzrh',
-         variable_long = 'flights_movements_zurich_airport',
-         unit = 'flights',
-         description = 'Flight Movements Zurich Airport (= number of arrivals and departures)',
-         location = 'Kanton Zürich',
-         origin = 'Flughafen Zürich',
-         update = 'daily',
-         public = 'ja') %>%
-  select(date,value,topic,variable_short,variable_long,location,unit,origin,update,public,description)
+  mutate(topic = 'Wirtschaft',
+         variable_short = 'fluege_zrh',
+         variable_long = 'Flugbewegungen ZRH',
+         unit = 'Anzahl',
+         description = 'Flugbewegungen Flughafen Zürich (Abflüge+Ankünfte)',
+         location = 'ZRH',
+         source = 'Flughafen Zürich',
+         update = 'täglich',
+         public = 'ja'
+         description="https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic")
+
+         ) %>%
+  select(date,value,topic,variable_short,variable_long,location,unit,source,update,public,description)
 
 #Datensatz aktualisieren
-write.csv(flights,'Economy_FlightTrafficZRH.csv',row.names=F, fileEncoding = "UTF-8")
+write.csv(flights,'Economy_FlightTraffic.csv',row.names=F, fileEncoding = "UTF-8")
 
 #Abspeichern weiterer Date (werden auch für Aktualisierung gebraucht.)
 write.csv(arrivals,'old/arrivals.csv',row.names=F, fileEncoding = "UTF-8")
