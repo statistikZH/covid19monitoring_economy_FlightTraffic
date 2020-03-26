@@ -95,6 +95,7 @@ arrivals_new <- flights[[2]] %>%
 ```
 
 ```{r Fortführung der bestehenden Tabellen,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
+
 departures_old <- read.csv('old/departures.csv')%>%
   mutate(date = as.POSIXct(date, format = '%Y-%m-%d'))
 
@@ -144,10 +145,8 @@ flights <- rbind(departures,arrivals)%>%
          location = 'ZRH',
          source = 'Flughafen Zürich',
          update = 'täglich',
-         public = 'ja'
-         description="https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic")
-
-         ) %>%
+         public = 'ja',
+         description="https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic") %>%
   select(date,value,topic,variable_short,variable_long,location,unit,source,update,public,description)
 
 #Datensatz aktualisieren
@@ -165,7 +164,7 @@ library(scales)
 library(ggrepel)
 
 
-flights <- read.csv('Economy_FlightTrafficZRH.csv', encoding = 'UTF-8')
+flights <- read.csv('Economy_FlightTraffic.csv', encoding = 'UTF-8')
 
 ggplot(flights,aes(as.Date(date),value)) +
   geom_line() +
