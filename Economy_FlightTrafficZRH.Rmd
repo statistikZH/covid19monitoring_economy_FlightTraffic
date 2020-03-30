@@ -160,7 +160,7 @@ write.csv(departures,'old/departures.csv', row.names=F, fileEncoding = "UTF-8")
 ```
 
 ```{r Plot, echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
-Nlibrary(ggplot2)
+library(ggplot2)
 library(scales)
 library(ggrepel)
 
