@@ -49,11 +49,11 @@ h3 { /* Header 3 */
 }
 </style>
 
-#```{r, echo=FALSE}
+```{r Logo, echo=FALSE}
 #htmltools::img(src = #knitr::image_uri(file.path("../KtZuerichLogo.png")),
 #             alt = 'logo', 
 #              style = 'position:absolute; top:0; right:0; #padding:0px;')
-#```
+```
 
 
 Die Zahl der täglichen Flugbewegungen (Summe der Starts und Landungen) am Flughafen Zürich ist eingebrochen. Eine Zäsur war dabei der 13. März (roter Kreis in der Grafik). An diesem Tag verkündete der Bundesrat verschärfte Massnahmen, um die Ausbreitung des Coronavirus in der Schweiz zu verlangsamen.  
@@ -164,25 +164,31 @@ write.csv(arrivals,'old/arrivals.csv',row.names=F, fileEncoding = "UTF-8")
 write.csv(departures,'old/departures.csv', row.names=F, fileEncoding = "UTF-8")
 ```
 
-#```{r Plot, echo=T,echo = F,collapse=TRUE, warning=FALSE,  #message=FALSE}
-#library(ggplot2)
-#library(scales)
-#library(ggrepel)
-#
-#
-#flights <- read.csv('Economy_FlightTraffic.csv', encoding = #'UTF-8')
-#
-#ggplot(flights,aes(as.Date(date),value)) +
-#  geom_line() +
-#  labs(title = 'Flugbewegungen Flughafen Zurich',
-#      caption = 'Daten: Flughafen Zürich',
-#      x = 'Datum',
-#      y = 'Anzahl') +
-#  geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$d#ate=='2020-03-13']),fill=NA, col='red', shape=1, size=5, stroke = #2)+
-# # geom_label_repel(data=flights[flights$date=='2020-03-13',],aes(#x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13'#]),label='13. März 2020', col='red',box.padding   = 0.35, #point.padding = 0.5)+
-#  scale_x_date(labels = date_format("%d.%m.%Y"))+
-#  theme_bw()
-#```
+```{r Plots, echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
+
+library(ggplot2)
+library(scales)
+library(ggrepel)
+
+
+flights <- read.csv('Economy_FlightTraffic.csv', encoding = 'UTF-8')
+
+ggplot(flights,aes(as.Date(date),value)) +
+  geom_line() +
+  labs(title = 'Flugbewegungen Flughafen Zurich',
+      caption = 'Daten: Flughafen Zürich',
+      x = 'Datum',
+      y = 'Anzahl') +
+  geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),fill=NA, col='red', shape=1, size=5, stroke = 2)+
+geom_label_repel(data=flights[flights$date=='2020-03-13',],aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),label='13. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
+  
+  #geom_point(aes(x=as.Date('2020-03-21'),y=flights$value[flights$date=='2020-03-21']),fill=NA, col='red', shape=1, size=5, stroke = 2)+
+#geom_label_repel(data=flights[flights$date=='2020-03-21',],aes(x=as.Date('2020-03-21'),y=flights$value[flights$date=='2020-03-21']),label='21. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
+  
+  
+  scale_x_date(labels = date_format("%d.%m.%Y"))+
+  theme_bw()
+```
 
 
 # Quellen
