@@ -1,3 +1,19 @@
-Mini-Skript um die beiden Tabellen auf https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik zu scrappen und die Tabellen über einen längeren Zeitraum fortzuführen.
+# covid19monitoring_economy_FlightTraffic
 
-In der Datei Economy_FlightTrafficZRH.csv ist das Total der Flugbewegungen (Start + Landungen nach Instrumentalflugverkehr) gespeichert.
+<h2> Grundlage </h2>
+Die Daten stammen von der Flugbewegungsstatistik, die der Flughafen Zürich veröffentlicht: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik. Die Daten werden zudem gespeichert, um einen längeren Zeitraum abzudecken als die vom Flughafen Zürich veröffentlichen Tabellen.
+
+<h2> Methodisches </h2>
+Die Daten geben den Stand zum Zeitpunkt wieder, als sie zum ersten Mal gescrappt wurden. Nachträgliche Anpassungen durch den Flughafen Zürich werden nicht erfasst. 
+
+<h2> Variablen </h2>
+
+
+<strong>fluege_zrh</strong> = 	Flugbewegungen Flughafen Zürich (Abflüge+Ankünfte) nach Instrumentalflugregeln (IFR-Verkehr)<br>
+
+<h2> Weitere Informationen </h2>
+[Projektseite](https://github.com/statistikZH/covid19monitoring) <br>
+[Datenbezug](https://www.web.statistik.zh.ch/covid19_indikatoren_uebersicht/#/) <br>
+[Visualisierung](https://www.web.statistik.zh.ch/cms_vis/covid19_indikatoren/) <br>
+
+
