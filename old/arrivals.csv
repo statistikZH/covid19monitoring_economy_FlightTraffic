@@ -128,4 +128,7 @@
 2020-05-22,32,"economy","arrzrh","arrivals_zurich_airport","Kanton Zürich","flights","Flughafen Zürich","daily","ja","number of arrivals at Zurich Airport"
 2020-05-23,22,"economy","arrzrh","arrivals_zurich_airport","Kanton Zürich","flights","Flughafen Zürich","daily","ja","number of arrivals at Zurich Airport"
 2020-05-24,60,"economy","arrzrh","arrivals_zurich_airport","Kanton Zürich","flights","Flughafen Zürich","daily","ja","number of arrivals at Zurich Airport"
+<<<<<<< HEAD
 2020-05-25,47,"economy","arrzrh","arrivals_zurich_airport","Kanton Zürich","flights","Flughafen Zürich","daily","ja","number of arrivals at Zurich Airport"
+=======
+>>>>>>> fff79250003e0fb2fff8e92aa7b55fb8f5cc14ac
