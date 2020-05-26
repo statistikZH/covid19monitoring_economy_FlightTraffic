@@ -73,11 +73,11 @@ library(magrittr)
 
 
 ```{r Aktuelle Daten laden,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
-url  <- 'https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik'
+url <- url("https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik", "rb") 
 
 flights <- url %>%
-  xml2::read_html()%>%
-  html_table(fill=T)
+  rvest::html()%>%
+  html_table(fill=T) 
 
 departures_new <- flights[[1]] %>%
   select(c(1,ncol(flights[[1]]))) %>%
@@ -94,6 +94,7 @@ arrivals_new <- flights[[2]] %>%
   rename(date=PisteZeit,value=`Total:`)%>%
   mutate(date = as.POSIXct(date, format = '%d.%m.%Y'))
 ```
+
 
 ```{r Fortführung der bestehenden Tabellen,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
 
