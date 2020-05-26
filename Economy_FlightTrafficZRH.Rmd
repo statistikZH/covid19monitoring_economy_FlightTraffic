@@ -152,16 +152,16 @@ flights <- rbind(departures,arrivals)%>%
   select(date,value,topic,variable_short,variable_long,location,unit,source,update,public,description)
 
 #Datensatz aktualisieren
-#flights <- flights[!is.na(flights$date),]
+flights <- flights[!is.na(flights$date),]
 write.csv(flights,'Economy_FlightTraffic.csv',row.names=F, fileEncoding = "UTF-8")
 
 
 
 #Abspeichern weiterer Date (werden auch für Aktualisierung gebraucht.)
-#arrivals <- arrivals[!is.na(arrivals$date),]
+arrivals <- arrivals[!is.na(arrivals$date),]
 write.csv(arrivals,'old/arrivals.csv',row.names=F, fileEncoding = "UTF-8")
 
-#departures <- departures[!is.na(departures$date),]
+departures <- departures[!is.na(departures$date),]
 write.csv(departures,'old/departures.csv', row.names=F, fileEncoding = "UTF-8")
 ```
 
