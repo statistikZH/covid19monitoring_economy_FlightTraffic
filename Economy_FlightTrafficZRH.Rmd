@@ -146,7 +146,7 @@ flights <- rbind(departures,arrivals)%>%
          description = 'Flugbewegungen Flughafen Zürich (Abflüge+Ankünfte)',
          location = 'ZRH',
          source = 'Flughafen Zürich',
-         update = 'täglich',
+         update = 'wöchentlich',
          public = 'ja',
          description="https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic") %>%
   select(date,value,topic,variable_short,variable_long,location,unit,source,update,public,description)
