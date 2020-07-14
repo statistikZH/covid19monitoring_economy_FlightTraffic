@@ -169,7 +169,7 @@ write.csv(departures,'old/departures.csv', row.names=F, fileEncoding = "UTF-8")
 
 library(ggplot2)
 library(scales)
-library(ggrepel)
+#library(ggrepel)
 
 
 flights <- read.csv('Economy_FlightTraffic.csv', encoding = 'UTF-8')
@@ -181,7 +181,7 @@ ggplot(flights,aes(as.Date(date),value)) +
       x = 'Datum',
       y = 'Anzahl') +
   geom_point(aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),fill=NA, col='red', shape=1, size=5, stroke = 2)+
-geom_label_repel(data=flights[flights$date=='2020-03-13',],aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),label='13. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
+#geom_label_repel(data=flights[flights$date=='2020-03-13',],aes(x=as.Date('2020-03-13'),y=flights$value[flights$date=='2020-03-13']),label='13. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
   
   #geom_point(aes(x=as.Date('2020-03-21'),y=flights$value[flights$date=='2020-03-21']),fill=NA, col='red', shape=1, size=5, stroke = 2)+
 #geom_label_repel(data=flights[flights$date=='2020-03-21',],aes(x=as.Date('2020-03-21'),y=flights$value[flights$date=='2020-03-21']),label='21. März 2020', col='red',box.padding   = 0.35, point.padding = 0.5)+
