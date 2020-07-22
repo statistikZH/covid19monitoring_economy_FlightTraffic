@@ -81,7 +81,7 @@ flights <- rbind(departures_old,arrivals_old)%>%
   mutate(Jahr = substring(date,1,4))%>%
   mutate(day_date = format(date, format="%m-%d"))%>%
   mutate(day_date = as.Date(day_date,format="%m-%d"))%>%
-  filter(Jahr>2012)%>%
+  filter(Jahr>2018)%>%
   mutate(alpha = ifelse(Jahr<2020,0.95,1))
 
 
@@ -90,8 +90,8 @@ library(scales)
 library(statR)
 
 ggplot(flights,aes(as.Date(day_date),value,col=Jahr)) +
-  geom_line(alpha=ifelse(flights$Jahr<2020,0.5,1),size=1.5) +
-  scale_color_manual(values=c(zhpal$zhblue,'red')) + 
+  geom_line(alpha=ifelse(flights$Jahr<2020,1,1),size=1.5) +
+  scale_color_manual(values=c(zhpal$zhblue[1],zhpal$zhdark[6])) + 
   labs(title = 'Starts und Landungen Flughafen Zürich\n',
       caption = 'Daten: Flughafen Zürich / KOF ETH',
       x = '\nDatum',
@@ -116,9 +116,7 @@ ggplot(flights,aes(as.Date(day_date),value,col=Jahr)) +
     strip.text.x = element_text(color="black", size = 30,face = "bold"))+
   guides(colour = guide_legend(nrow = 1))
 
-ggsave('zeitreihen_plot3.png',width = 22.86, height =14.128, units = c("cm"),dpi=300,scale=3)
-
-
+ggsave('economy_FlightTraffic_tweet_2019_vs_2020.png',width = 22.86, height =14.128, units = c("cm"),dpi=300,scale=3)
 
 ```
 
