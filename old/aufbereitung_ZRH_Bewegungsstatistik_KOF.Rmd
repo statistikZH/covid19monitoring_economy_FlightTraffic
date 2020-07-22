@@ -1,0 +1,126 @@
+---
+title: "Flight Traffic ZRH KOF Data"
+output: html_document
+---
+
+```{r vorbereitung,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = F)
+
+### Packages 
+library(dplyr)
+```
+
+```{r Aktuelle Daten laden,echo=T,echo = F,collapse=TRUE, warning=FALSE,  message=FALSE}
+kofdt<- read.csv("/home/bschlaepfer/covid19monitoring_server/economy_FlightTraffic/old/ZRH_Bewegungsstatistik_KOF.csv", sep=';') %>%
+  mutate(date = as.POSIXct(date, format = '%d.%m.%Y'))%>%
+  filter(date < as.POSIXct('2020-01-17',format = '%Y-%m-%d'))
+
+kof_dep_old <- kofdt%>%
+  select(c(1,3))%>%
+  rename(value=ch.zrh_airport_departure.total)
+
+departures_old <- read.csv('/home/bschlaepfer/covid19monitoring_server/economy_FlightTraffic/old/departures.csv')%>%
+  mutate(date = as.POSIXct(date, format = '%Y-%m-%d'))%>%
+  bind_rows(kof_dep_old)%>%
+  arrange(date) %>%
+  mutate(topic = 'economy',
+         variable_short = 'depzrh',
+         variable_long = 'departures_zurich_airport',
+         unit = 'flights',
+         description = 'number of departures from Zurich Airport',
+         location = 'Kanton Zürich',
+         origin = 'Flughafen Zürich',
+         update = 'weekly',
+         public = 'ja') %>%
+  select(date,value,topic,variable_short, variable_long,location, unit, origin, update, public, description)
+
+kof_arr_old <- kofdt%>%
+  select(c(1,2))%>%
+  rename(value=ch.zrh_airport_arrival.total)
+
+arrivals_old <- read.csv('/home/bschlaepfer/covid19monitoring_server/economy_FlightTraffic/old/arrivals.csv')%>%
+  mutate(date = as.POSIXct(date, format = '%Y-%m-%d'))%>%
+  bind_rows(kof_arr_old)%>%
+  arrange(date)%>%
+  mutate(topic = 'economy',
+         variable_short = 'arrzrh',
+         variable_long = 'arrivals_zurich_airport',
+         unit = 'flights',
+         description = 'number of arrivals at Zurich Airport',
+         location = 'Kanton Zürich',
+         origin = 'Flughafen Zürich',
+         update = 'weekly',
+         public = 'ja') %>%
+  select(date,value,topic,variable_short, variable_long,location, unit, origin, update, public, description)
+
+write.csv(departures_old,'/home/bschlaepfer/covid19monitoring_server/economy_FlightTraffic/old/departures.csv', row.names=F, fileEncoding = "UTF-8")
+
+write.csv(arrivals_old,'/home/bschlaepfer/covid19monitoring_server/economy_FlightTraffic/old/arrivals.csv',row.names=F, fileEncoding = "UTF-8")
+```
+
+```{r Plot}
+
+#Einen Datensatz generieren
+flights <- rbind(departures_old,arrivals_old)%>%
+  group_by(date) %>%
+  summarise(value = sum(value)) %>%
+  arrange(date) %>%
+  mutate(topic = 'Wirtschaft',
+         variable_short = 'fluege_zrh',
+         variable_long = 'Flugbewegungen ZRH',
+         unit = 'Anzahl',
+         description = 'Flugbewegungen Flughafen Zürich (Abflüge+Ankünfte)',
+         location = 'ZRH',
+         source = 'Flughafen Zürich',
+         update = 'wöchentlich',
+         public = 'ja',
+         description="https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic") %>%
+  select(date,value,topic,variable_short,variable_long,location,unit,source,update,public,description)%>%
+  mutate(Jahr = substring(date,1,4))%>%
+  mutate(day_date = format(date, format="%m-%d"))%>%
+  mutate(day_date = as.Date(day_date,format="%m-%d"))%>%
+  filter(Jahr>2012)%>%
+  mutate(alpha = ifelse(Jahr<2020,0.95,1))
+
+
+library(ggplot2)
+library(scales)
+library(statR)
+
+ggplot(flights,aes(as.Date(day_date),value,col=Jahr)) +
+  geom_line(alpha=ifelse(flights$Jahr<2020,0.5,1),size=1.5) +
+  scale_color_manual(values=c(zhpal$zhblue,'red')) + 
+  labs(title = 'Flugbewegungen Flughafen Zurich',
+      caption = 'Daten: Flughafen Zürich / ETH KOF',
+      x = 'Datum',
+      y = 'Anzahl') +
+  scale_x_date(labels = date_format("%d.%m.%Y"))+
+  theme_bw()+
+  theme(
+    axis.line = element_line(color="black", size = 1),
+    axis.text = element_text(color="black", size = 25,face = "bold"),
+    axis.title = element_text(color="black", size = 25,face = "bold"),
+    axis.ticks.y = element_blank(),
+  
+    plot.title = element_text(color="black", size = 40,face = "bold"),
+    plot.subtitle = element_text(color="black", size = 20),
+    plot.caption= element_text(color="black", size=20),
+    
+    legend.title=element_blank(),
+    legend.text= element_text(color="black", size=20),
+    legend.key.size = unit(3,"line"),
+    legend.position = 'top',
+    
+    strip.text.x = element_text(color="black", size = 30,face = "bold"))+
+  guides(colour = guide_legend(nrow = 1))
+
+ggsave('zeitreihen_plot3.png',width = 22.86, height =14.128, units = c("cm"),dpi=300,scale=3)
+
+
+
+```
+
+
+

@@ -1,7 +1,9 @@
 # covid19monitoring_economy_FlightTraffic
 
 <h2> Grundlage </h2>
-Die Daten stammen von der Flugbewegungsstatistik, die der Flughafen Zürich veröffentlicht: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik. Die Daten werden zudem gespeichert, um einen längeren Zeitraum abzudecken als die vom Flughafen Zürich veröffentlichen Tabellen.
+Ab dem 17. Januar 2020 stammen die Daten von der Flugbewegungsstatistik, die der Flughafen Zürich veröffentlicht: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik. Die Daten werden zudem gespeichert, um einen längeren Zeitraum abzudecken als die vom Flughafen Zürich veröffentlichen Tabellen. 
+
+Die Daten bis zum 17. Januar werden von der KOF ETH zur Verfügung gestellt. Datenquelle sind die Lärmbulletins des Flughafens Zürich: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/laermmonitoring/laermbulletin 
 
 <h2> Methodisches </h2>
 Die Daten geben den Stand zum Zeitpunkt wieder, als sie zum ersten Mal gescrappt wurden. Nachträgliche Anpassungen durch den Flughafen Zürich werden nicht erfasst. 

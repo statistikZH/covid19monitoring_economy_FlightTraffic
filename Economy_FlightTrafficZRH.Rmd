@@ -66,6 +66,7 @@ library(rvest)
 library(dplyr)
 library(ggplot2)
 library(magrittr)
+library(plotly)
 ```
 
 
@@ -82,7 +83,6 @@ departures_new <- flights[[1]] %>%
   as_tibble()%>%
   rename(date=PisteRoute,value=`Total:`)%>%
   mutate(date = as.POSIXct(date, format = '%d.%m.%Y'))
-
 
 arrivals_new <- flights[[2]] %>%
   select(c(1,ncol(flights[[2]]))) %>%
@@ -109,7 +109,7 @@ departures <- departures_new %>%
          description = 'number of departures from Zurich Airport',
          location = 'Kanton Zürich',
          origin = 'Flughafen Zürich',
-         update = 'daily',
+         update = 'wöchentlich',
          public = 'ja') %>%
   select(date,value,topic,variable_short, variable_long,location, unit, origin, update, public, description)
 
@@ -127,7 +127,7 @@ arrivals <- arrivals_new %>%
          description = 'number of arrivals at Zurich Airport',
          location = 'Kanton Zürich',
          origin = 'Flughafen Zürich',
-         update = 'daily',
+         update = 'wöchentlich',
          public = 'ja') %>%
   select(date,value,topic,variable_short, variable_long,location, unit, origin, update, public, description)
 
@@ -142,7 +142,7 @@ flights <- rbind(departures,arrivals)%>%
          unit = 'Anzahl',
          description = 'Flugbewegungen Flughafen Zürich (Abflüge+Ankünfte)',
          location = 'ZRH',
-         source = 'Flughafen Zürich',
+         source = 'Flughafen Zürich / KOF ETH',
          update = 'wöchentlich',
          public = 'ja',
          description="https://github.com/statistikZH/covid19monitoring_economy_FlightTraffic") %>%
@@ -171,7 +171,7 @@ library(scales)
 
 flights <- read.csv('Economy_FlightTraffic.csv', encoding = 'UTF-8')
 
-ggplot(flights,aes(as.Date(date),value)) +
+p <- ggplot(flights,aes(as.Date(date),value)) +
   geom_line() +
   labs(title = 'Flugbewegungen Flughafen Zurich',
       caption = 'Daten: Flughafen Zürich',
@@ -186,6 +186,10 @@ ggplot(flights,aes(as.Date(date),value)) +
   
   scale_x_date(labels = date_format("%d.%m.%Y"))+
   theme_bw()
+
+
+ggplotly(p) %>%  
+  config(displayModeBar = F)
 ```
 
 
