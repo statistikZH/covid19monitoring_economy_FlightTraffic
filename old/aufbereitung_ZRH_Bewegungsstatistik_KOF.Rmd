@@ -92,11 +92,11 @@ library(statR)
 ggplot(flights,aes(as.Date(day_date),value,col=Jahr)) +
   geom_line(alpha=ifelse(flights$Jahr<2020,0.5,1),size=1.5) +
   scale_color_manual(values=c(zhpal$zhblue,'red')) + 
-  labs(title = 'Flugbewegungen Flughafen Zurich',
-      caption = 'Daten: Flughafen Zürich / ETH KOF',
-      x = 'Datum',
-      y = 'Anzahl') +
-  scale_x_date(labels = date_format("%d.%m.%Y"))+
+  labs(title = 'Starts und Landungen Flughafen Zürich\n',
+      caption = 'Daten: Flughafen Zürich / KOF ETH',
+      x = '\nDatum',
+      y = '\nAnzahl\n') +
+  scale_x_date(labels = date_format("%d.%m"), breaks = as.Date(c('01.03','01.06','01.09','01.12'),format="%d.%m"))+
   theme_bw()+
   theme(
     axis.line = element_line(color="black", size = 1),
@@ -108,7 +108,7 @@ ggplot(flights,aes(as.Date(day_date),value,col=Jahr)) +
     plot.subtitle = element_text(color="black", size = 20),
     plot.caption= element_text(color="black", size=20),
     
-    legend.title=element_blank(),
+    legend.title=element_text(color="black", size=20, face='bold'),
     legend.text= element_text(color="black", size=20),
     legend.key.size = unit(3,"line"),
     legend.position = 'top',
