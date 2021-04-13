@@ -74,7 +74,7 @@ library(plotly)
 url <- url("https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik", "rb") 
 
 flights <- url %>%
-  rvest::html()%>%
+  rvest::read_html()%>%
   html_table(fill=T) 
 
 departures_new <- flights[[1]] %>%
