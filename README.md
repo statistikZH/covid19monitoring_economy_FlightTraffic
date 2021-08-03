@@ -1,5 +1,7 @@
 # covid19monitoring_economy_FlightTraffic
 
+<strong> Die Aktualisierung des Indikators wurde eingestellt. Aktuelle Daten finden sich im Github-Repo der KOF ETH:</strong> https://github.com/KOF-ch/economic-monitoring
+
 <h2> Grundlage </h2>
 Ab dem 17. Januar 2020 stammen die Daten von der Flugbewegungsstatistik, die der Flughafen Zürich veröffentlicht: https://www.flughafen-zuerich.ch/unternehmen/laerm-politik-und-umwelt/flugbewegungen/bewegungsstatistik. Die Daten werden zudem gespeichert, um einen längeren Zeitraum abzudecken als die vom Flughafen Zürich veröffentlichen Tabellen. 
 
